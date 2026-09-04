@@ -17,10 +17,9 @@ namespace TesteEscola.Api.Repositories
 
         public IEnumerable<TurmaResponse> ListarComVagas()
         {
-            const string sql = @"
-SELECT Id, Nome, Periodo, VagasTotal, VagasDisponiveis
-FROM dbo.Turma
-ORDER BY Nome;";
+            const string sql = @"SELECT Id, Nome, Periodo, VagasTotal, VagasDisponiveis
+                                   FROM dbo.Turma
+                                  ORDER BY Nome;";
 
             using (var connection = _connectionFactory.Create())
             {

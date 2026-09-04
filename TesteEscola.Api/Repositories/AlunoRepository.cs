@@ -17,16 +17,15 @@ namespace TesteEscola.Api.Repositories
 
         public PagedResult<AlunoResponse> Listar(string nome, int page, int pageSize)
         {
-            const string sql = @"
-SELECT COUNT(1)
-FROM dbo.Aluno
-WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%');
+            const string sql = @"SELECT COUNT(1)
+                                   FROM dbo.Aluno
+                                  WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%');
 
-SELECT Id, Nome, Email, DataNascimento, Ativo, DataCadastro
-FROM dbo.Aluno
-WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%')
-ORDER BY Nome
-OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
+                                 SELECT Id, Nome, Email, DataNascimento, Ativo, DataCadastro
+                                   FROM dbo.Aluno
+                                  WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%')
+                               ORDER BY Nome
+                              OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
 
             using (var connection = _connectionFactory.Create())
             using (var multi = connection.QueryMultiple(sql, new
@@ -48,10 +47,9 @@ OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
 
         public Aluno ObterPorId(int id)
         {
-            const string sql = @"
-SELECT Id, Nome, Email, DataNascimento, Ativo, DataCadastro
-FROM dbo.Aluno
-WHERE Id = @Id;";
+            const string sql = @"SELECT Id, Nome, Email, DataNascimento, Ativo, DataCadastro
+                                   FROM dbo.Aluno
+                                  WHERE Id = @Id;";
 
             using (var connection = _connectionFactory.Create())
             {
@@ -61,11 +59,10 @@ WHERE Id = @Id;";
 
         public int Criar(AlunoRequest aluno)
         {
-            const string sql = @"
-INSERT INTO dbo.Aluno (Nome, Email, DataNascimento, Ativo)
-VALUES (@Nome, @Email, @DataNascimento, 1);
+            const string sql = @"INSERT INTO dbo.Aluno (Nome, Email, DataNascimento, Ativo)
+                                      VALUES (@Nome, @Email, @DataNascimento, 1);
 
-SELECT CAST(SCOPE_IDENTITY() AS INT);";
+                                 SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
             using (var connection = _connectionFactory.Create())
             {
@@ -75,12 +72,11 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
         public bool Atualizar(int id, AlunoRequest aluno)
         {
-            const string sql = @"
-UPDATE dbo.Aluno
-SET Nome = @Nome,
-    Email = @Email,
-    DataNascimento = @DataNascimento
-WHERE Id = @Id;";
+            const string sql = @"UPDATE dbo.Aluno
+                                    SET Nome = @Nome,
+                                        Email = @Email,
+                                        DataNascimento = @DataNascimento
+                                  WHERE Id = @Id;";
 
             using (var connection = _connectionFactory.Create())
             {
@@ -96,10 +92,9 @@ WHERE Id = @Id;";
 
         public bool Inativar(int id)
         {
-            const string sql = @"
-UPDATE dbo.Aluno
-SET Ativo = 0
-WHERE Id = @Id;";
+            const string sql = @"UPDATE dbo.Aluno
+                                    SET Ativo = 0
+                                  WHERE Id = @Id;";
 
             using (var connection = _connectionFactory.Create())
             {

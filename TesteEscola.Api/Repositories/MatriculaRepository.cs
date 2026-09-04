@@ -61,8 +61,8 @@ namespace TesteEscola.Api.Repositories
 
                         var vagasAtualizadas = connection.Execute(
                             @"UPDATE dbo.Turma
-                              SET VagasDisponiveis = VagasDisponiveis - 1
-                              WHERE Id = @TurmaId AND VagasDisponiveis > 0;",
+                                 SET VagasDisponiveis = VagasDisponiveis - 1
+                               WHERE Id = @TurmaId AND VagasDisponiveis > 0;",
                             request,
                             transaction);
 
