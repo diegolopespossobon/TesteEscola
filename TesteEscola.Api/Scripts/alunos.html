@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alunos</title>
+  <style>
+    body {
+      color: #202124;
+      font-family: Arial, sans-serif;
+      margin: 24px;
+    }
+
+    form {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      max-width: 640px;
+    }
+
+    input, button {
+      border: 1px solid #c6cbd1;
+      border-radius: 6px;
+      font: inherit;
+      padding: 10px 12px;
+    }
+
+    input {
+      flex: 1;
+    }
+
+    button {
+      background: #1f6feb;
+      border-color: #1f6feb;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    table {
+      border-collapse: collapse;
+      max-width: 960px;
+      width: 100%;
+    }
+
+    th, td {
+      border-bottom: 1px solid #d8dee4;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #f6f8fa;
+    }
+  </style>
+</head>
+<body>
+  <h1>Alunos</h1>
+
+  <form id="filtro">
+    <input id="nome" type="search" placeholder="Filtrar por nome">
+    <button type="submit">Buscar</button>
+  </form>
+
+  <p id="total"></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Nascimento</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="alunos"></tbody>
+  </table>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    function carregarAlunos() {
+      $.getJSON('/api/alunos', { nome: $('#nome').val(), page: 1, pageSize: 20 })
+        .done(function (data) {
+          $('#total').text('Total: ' + data.total);
+          $('#alunos').empty();
+
+          data.items.forEach(function (aluno) {
+            $('#alunos').append(
+              '<tr>' +
+              '<td>' + aluno.nome + '</td>' +
+              '<td>' + aluno.email + '</td>' +
+              '<td>' + aluno.dataNascimento.substring(0, 10) + '</td>' +
+              '<td>' + (aluno.ativo ? 'Ativo' : 'Inativo') + '</td>' +
+              '</tr>'
+            );
+          });
+        });
+    }
+
+    $('#filtro').on('submit', function (event) {
+      event.preventDefault();
+      carregarAlunos();
+    });
+
+    carregarAlunos();
+  </script>
+</body>
+</html>
